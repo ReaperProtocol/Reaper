@@ -4,28 +4,29 @@
   <text x="72" y="86" fill="#edf4ef" font-size="34" font-family="Arial">Reaper // Distressed Flow Console</text>
   <text x="72" y="118" fill="#8aa196" font-size="16" font-family="Arial">liquidation edge, oracle drift, keeper race, unwind quality</text>
 
-  <rect x="74" y="156" width="440" height="220" rx="20" fill="#0b100f" stroke="#244038"/>
+  <rect x="74" y="156" width="476" height="220" rx="20" fill="#0b100f" stroke="#244038"/>
   <text x="100" y="192" fill="#dce7e0" font-size="18" font-family="Arial">Liquidation Queue</text>
-  <text x="100" y="236" fill="#ee7e68" font-size="16" font-family="Arial">kamino / SOL-USDC / HF 1.021 / edge $142</text>
-  <text x="100" y="268" fill="#ee7e68" font-size="16" font-family="Arial">marginfi / BONK-USDC / HF 1.034 / edge $96</text>
-  <text x="100" y="300" fill="#e6c36b" font-size="16" font-family="Arial">kamino / JTO-USDC / HF 1.081 / edge $63</text>
+  <text x="100" y="236" fill="#ee7e68" font-size="15" font-family="Arial">kamino / SOL-USDC / HF 1.021 / edge $142</text>
+  <text x="100" y="268" fill="#ee7e68" font-size="15" font-family="Arial">marginfi / BONK-USDC / HF 1.034 / edge $96</text>
+  <text x="100" y="300" fill="#e6c36b" font-size="15" font-family="Arial">kamino / JTO-USDC / HF 1.081 / edge $63</text>
 
-  <rect x="540" y="156" width="270" height="220" rx="20" fill="#0b100f" stroke="#244038"/>
-  <text x="566" y="192" fill="#dce7e0" font-size="18" font-family="Arial">Oracle Monitor</text>
-  <text x="566" y="238" fill="#8aa196" font-size="14" font-family="Arial">age</text>
-  <rect x="620" y="224" width="142" height="18" rx="9" fill="#1f2925"/>
-  <rect x="620" y="224" width="80" height="18" rx="9" fill="#e6c36b"/>
+  <rect x="576" y="156" width="234" height="220" rx="20" fill="#0b100f" stroke="#244038"/>
+  <text x="602" y="192" fill="#dce7e0" font-size="18" font-family="Arial">Oracle Monitor</text>
+  <text x="602" y="238" fill="#8aa196" font-size="14" font-family="Arial">age</text>
+  <rect x="648" y="224" width="114" height="18" rx="9" fill="#1f2925"/>
+  <rect x="648" y="224" width="64" height="18" rx="9" fill="#e6c36b"/>
   <text x="770" y="238" fill="#e6c36b" font-size="13" font-family="Arial">54s</text>
-  <text x="566" y="284" fill="#8aa196" font-size="14" font-family="Arial">drift</text>
-  <rect x="620" y="270" width="142" height="18" rx="9" fill="#1f2925"/>
-  <rect x="620" y="270" width="62" height="18" rx="9" fill="#ee7e68"/>
+  <text x="602" y="284" fill="#8aa196" font-size="14" font-family="Arial">drift</text>
+  <rect x="648" y="270" width="114" height="18" rx="9" fill="#1f2925"/>
+  <rect x="648" y="270" width="50" height="18" rx="9" fill="#ee7e68"/>
   <text x="770" y="284" fill="#ee7e68" font-size="13" font-family="Arial">34 bps</text>
 
-  <rect x="836" y="156" width="286" height="220" rx="20" fill="#0b100f" stroke="#244038"/>
+  <rect x="846" y="156" width="276" height="220" rx="20" fill="#0b100f" stroke="#244038"/>
   <text x="862" y="192" fill="#dce7e0" font-size="18" font-family="Arial">Keeper Race</text>
-  <text x="862" y="236" fill="#8aa196" font-size="14" font-family="Arial">success probability 0.62</text>
-  <text x="862" y="270" fill="#8aa196" font-size="14" font-family="Arial">slot congestion elevated but still tradable</text>
-  <text x="862" y="320" fill="#7fc19f" font-size="15" font-family="Arial">priority fee budget still clears target edge</text>
+  <text x="862" y="236" fill="#8aa196" font-size="13" font-family="Arial">success probability 0.62</text>
+  <text x="862" y="268" fill="#8aa196" font-size="13" font-family="Arial">slot congestion is elevated</text>
+  <text x="862" y="290" fill="#8aa196" font-size="13" font-family="Arial">but still tradable</text>
+  <text x="862" y="324" fill="#7fc19f" font-size="14" font-family="Arial">priority fee still clears target edge</text>
 
   <rect x="74" y="408" width="1048" height="238" rx="20" fill="#0b100f" stroke="#244038"/>
   <text x="100" y="444" fill="#dce7e0" font-size="18" font-family="Arial">Edge Breakdown</text>
