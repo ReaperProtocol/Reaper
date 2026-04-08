@@ -41,4 +41,8 @@ describe("edge fields", () => {
   it("liquidation edge stays numeric", () => {
     expect(makePosition(1.03).liquidationEdgeUsd).toBeTypeOf("number");
   });
+
+  it("keeps unwind quality bounded above zero", () => {
+    expect(makePosition(1.03).unwindQuality).toBeGreaterThan(0);
+  });
 });
