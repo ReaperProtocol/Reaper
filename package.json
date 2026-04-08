@@ -1,6 +1,6 @@
 {
   "name": "reaper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Solana distressed-collateral hunter that scores liquidation edge, oracle drift, and keeper-race probability",
   "type": "module",
   "main": "dist/index.js",
@@ -22,6 +22,12 @@
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   },
+  "keywords": [
+    "solana",
+    "liquidations",
+    "distressed-flow",
+    "keepers"
+  ],
   "engines": {
     "node": ">=20.0.0",
     "bun": ">=1.2.0"
