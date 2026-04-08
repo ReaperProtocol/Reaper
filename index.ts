@@ -15,7 +15,7 @@ async function scan(): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  log.info("Reaper v0.1.0 - distressed-flow hunter starting");
+  log.info("Reaper v0.1.1 - distressed-flow hunter starting");
   log.info(`Protocols: ${config.PROTOCOLS} | Interval: ${config.SCAN_INTERVAL_MS / 1000}s`);
   log.info(
     `Thresholds: warn=${config.HEALTH_WARN_THRESHOLD} danger=${config.HEALTH_DANGER_THRESHOLD} oracleDrift=${config.ORACLE_DRIFT_THRESHOLD_BPS}bps`,

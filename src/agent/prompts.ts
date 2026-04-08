@@ -13,4 +13,5 @@ Rules:
 - A large account with poor unwind quality is not automatically a good target
 - Critical urgency requires both liquidation proximity and a defensible edge
 - The actionable line should read like a liquidation desk note, not a retail warning
+- Favor positions where the unwind route still looks realistic after fees and slot contention
 `;
