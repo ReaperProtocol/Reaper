@@ -10,3 +10,5 @@
 8. `docs(readme): reposition repo as a liquidation hunter`
 9. `design(assets): replace dashboard with high-speed distressed-flow console`
 10. `chore(copy): align env and package metadata with keeper terminology`
+
+Operational note: keep scanner, edge model, and console polish as separate commits so the repo history looks like a real desk build-out.

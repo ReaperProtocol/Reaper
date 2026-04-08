@@ -7,3 +7,5 @@ We need to clamp edge harder when drift expands at the same time slot congestion
 ## Unwind quality is too static for correlated collateral stress
 
 When multiple accounts share the same collateral type, unwind quality should worsen as the queue fills. Add a congestion term tied to per-asset liquidation density.
+
+Backlog note: validate both issues against stressed oracle windows before tightening the live scanner defaults.

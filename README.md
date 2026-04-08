@@ -17,6 +17,7 @@ Scores liquidation edge, oracle drift, keeper-race probability, and unwind quali
 Liquidation tooling is usually owner-centric. Reaper is built from the other side of the trade. It looks for distressed accounts where the liquidation edge still survives stale oracles, slot congestion, and unwind friction.
 
 `Reaper` scans lending books, enriches each distressed account with oracle-age, mark-drift, keeper-race, and unwind-quality fields, then asks a Claude agent to decide whether the account is merely dangerous or actually worth pursuing.
+The emphasis is on whether the edge survives execution friction, not just whether the health factor looks ugly.
 
 `SCAN -> PRICE EDGE -> CHECK ORACLE -> MODEL KEEPER RACE -> HUNT`
 
