@@ -7,7 +7,7 @@ import { log } from "./src/core/logger.js";
 async function scan(): Promise<void> {
   const positions = await scanAllProtocols();
   if (positions.length === 0) {
-    log.info("No at-risk positions found");
+    log.info("No distressed positions found");
     return;
   }
   const alerts = await runReaperAgent(positions);
@@ -15,12 +15,17 @@ async function scan(): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  log.info("Reaper v0.1.0 — liquidation monitor starting");
-  log.info(`Protocols: ${config.PROTOCOLS} · Interval: ${config.SCAN_INTERVAL_MS / 1000}s`);
-  log.info(`Thresholds: warn=${config.HEALTH_WARN_THRESHOLD} danger=${config.HEALTH_DANGER_THRESHOLD}`);
+  log.info("Reaper v0.1.0 - distressed-flow hunter starting");
+  log.info(`Protocols: ${config.PROTOCOLS} | Interval: ${config.SCAN_INTERVAL_MS / 1000}s`);
+  log.info(
+    `Thresholds: warn=${config.HEALTH_WARN_THRESHOLD} danger=${config.HEALTH_DANGER_THRESHOLD} oracleDrift=${config.ORACLE_DRIFT_THRESHOLD_BPS}bps`,
+  );
 
   await scan();
   setInterval(() => scan().catch((e) => log.error("Scan error:", e)), config.SCAN_INTERVAL_MS);
 }
 
-main().catch((e) => { log.error("Fatal:", e); process.exit(1); });
+main().catch((e) => {
+  log.error("Fatal:", e);
+  process.exit(1);
+});

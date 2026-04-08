@@ -2,8 +2,8 @@
 
 # Reaper
 
-**Liquidation risk monitor for Solana DeFi.**
-Watches every leveraged position on Kamino, MarginFi, and Drift. Fires alerts before the reaper arrives.
+**Solana distressed-collateral hunter.**
+Scores liquidation edge, oracle drift, keeper-race probability, and unwind quality before calling a setup actionable.
 
 [![Build](https://img.shields.io/github/actions/workflow/status/ReaperProtocol/Reaper/ci.yml?branch=main&style=flat-square&label=Build)](https://github.com/ReaperProtocol/Reaper/actions)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
@@ -14,65 +14,45 @@ Watches every leveraged position on Kamino, MarginFi, and Drift. Fires alerts be
 
 ---
 
-In DeFi, liquidations happen in seconds. A 5% candle can wipe a $100K position before anyone reacts. The problem isn't the market — it's that most tools only show you your own positions.
+Liquidation tooling is usually owner-centric. Reaper is built from the other side of the trade. It looks for distressed accounts where the liquidation edge still survives stale oracles, slot congestion, and unwind friction.
 
-`Reaper` scans every lending protocol every 30 seconds, finds positions approaching the liquidation threshold, and uses Claude to assess urgency, size, and volatility context. Critical positions get escalated immediately. You see what's about to break before it does.
+`Reaper` scans lending books, enriches each distressed account with oracle-age, mark-drift, keeper-race, and unwind-quality fields, then asks a Claude agent to decide whether the account is merely dangerous or actually worth pursuing.
 
-```
-SCAN → ASSESS → PRIORITIZE → ALERT
-```
+`SCAN -> PRICE EDGE -> CHECK ORACLE -> MODEL KEEPER RACE -> HUNT`
 
 ---
 
-## Risk Dashboard
+## Distressed Flow Console
 
 ![Reaper Risk Monitor](assets/preview-risk.svg)
 
 ---
 
-## Liquidation Event
+## Liquidation Ticket
 
 ![Reaper Liquidation](assets/preview-liquidation.svg)
 
 ---
 
-## Architecture
+## Technical Spec
 
-```
-┌──────────────────────────────────────────────┐
-│          Protocol Scanners                    │
-│  Kamino API · MarginFi API · Drift SDK       │
-│  Health factor · collateral · borrow size    │
-└──────────────────────┬───────────────────────┘
-                       ▼
-┌──────────────────────────────────────────────┐
-│           Risk Aggregator                     │
-│  Merge · dedupe · sort by health factor      │
-│  Group: critical / danger / watch            │
-└──────────────────────┬───────────────────────┘
-                       ▼
-┌──────────────────────────────────────────────┐
-│         Claude Reaper Agent                   │
-│  get_risk_summary → get_critical_positions   │
-│  → get_position_detail → emit_risk_alert     │
-└──────────────────────┬───────────────────────┘
-                       ▼
-┌──────────────────────────────────────────────┐
-│             Alert Printer                     │
-│  Health bars · urgency icons · action notes  │
-└──────────────────────────────────────────────┘
-```
+Reaper estimates liquidation opportunity quality with:
 
----
+`Edge = grossLiquidationSpread - slippageCost - priorityFee - keeperFailurePenalty - oraclePenalty`
 
-## Health Factor Zones
+Additional guards:
 
-| Zone | Range | Meaning |
-|------|-------|---------|
-| ☠ **CRITICAL** | < 1.05 | Liquidation imminent |
-| ⚠ **DANGER** | 1.05–1.15 | 5–10% move liquidates |
-| **WATCH** | 1.15–1.50 | Monitor closely |
-| **SAFE** | > 1.50 | No immediate risk |
+- reject marginal setups when `oracleAgeSeconds > MAX_ORACLE_AGE_SECONDS`
+- reject when `oracleDriftBps > ORACLE_DRIFT_THRESHOLD_BPS`
+- rank by `liquidationEdgeUsd * keeperRaceProbability`
+- surface `unwindQuality` so distressed collateral that cannot be exited cleanly is demoted
+
+The repo deliberately distinguishes between:
+
+- a position that is close to liquidation
+- a position that is actually worth chasing
+
+Those are not the same.
 
 ---
 
@@ -92,12 +72,19 @@ bun run dev
 ```bash
 ANTHROPIC_API_KEY=sk-ant-...
 HELIUS_API_KEY=...
-PROTOCOLS=kamino,marginfi,drift
 HEALTH_WARN_THRESHOLD=1.15
 HEALTH_DANGER_THRESHOLD=1.05
-MIN_POSITION_USD=5000
-SCAN_INTERVAL_MS=30000
+ORACLE_DRIFT_THRESHOLD_BPS=45
+MAX_ORACLE_AGE_SECONDS=75
+MIN_LIQUIDATION_EDGE_USD=40
 ```
+
+---
+
+## Legitimacy Notes
+
+- Planned commit sequence: [`docs/commit-sequence.md`](docs/commit-sequence.md)
+- Draft engineering issues: [`docs/issue-drafts.md`](docs/issue-drafts.md)
 
 ---
 
@@ -107,4 +94,4 @@ MIT
 
 ---
 
-*watch the health. survive the market.*
+*hunt the edge, not just the health factor.*

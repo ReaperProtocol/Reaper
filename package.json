@@ -1,7 +1,7 @@
 {
   "name": "reaper",
   "version": "0.1.0",
-  "description": "Liquidation risk monitor — scans DeFi lending positions across Kamino, MarginFi, and Drift for positions approaching liquidation",
+  "description": "Solana distressed-collateral hunter that scores liquidation edge, oracle drift, and keeper-race probability",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

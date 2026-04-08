@@ -14,13 +14,6 @@ const URGENCY_COLOR: Record<string, string> = {
   low: YELLOW,
 };
 
-const URGENCY_ICON: Record<string, string> = {
-  critical: "☠",
-  high: "⚠",
-  medium: "▲",
-  low: "·",
-};
-
 function hfBar(hf: number): string {
   const capped = Math.min(hf, 2);
   const pct = Math.max(0, Math.min(1, (capped - 1) / 1));
@@ -32,29 +25,29 @@ function hfBar(hf: number): string {
 
 export function printRiskAlert(alert: RiskAlert): void {
   const color = URGENCY_COLOR[alert.urgency] ?? "";
-  const icon = URGENCY_ICON[alert.urgency] ?? "·";
-  const p = alert.position;
+  const position = alert.position;
 
-  console.log(`\n  ${BOLD}${color}${icon} ${alert.urgency.toUpperCase()}${RESET}  ${p.protocol.toUpperCase()} · ${p.collateralToken}/${p.borrowToken}`);
-  console.log(`     Health: ${hfBar(p.healthFactor)}`);
-  console.log(`     Size:   $${p.collateralUsd.toLocaleString()} collateral · $${p.borrowUsd.toLocaleString()} borrowed`);
+  console.log(`\n  ${BOLD}${color}${alert.urgency.toUpperCase()}${RESET} ${position.protocol.toUpperCase()} | ${position.collateralToken}/${position.borrowToken}`);
+  console.log(`     Health: ${hfBar(position.healthFactor)}`);
+  console.log(`     Edge:   $${position.liquidationEdgeUsd.toFixed(2)} | keeper ${position.keeperRaceProbability.toFixed(2)} | unwind ${position.unwindQuality.toFixed(2)}`);
+  console.log(`     Oracle: age ${position.oracleAgeSeconds}s | drift ${position.oracleDriftBps} bps`);
   console.log(`     ${alert.message}`);
-  console.log(`     ${BOLD}→ ${alert.actionable}${RESET}`);
-  console.log(`     ${DIM}${p.owner.slice(0, 12)}…${RESET}`);
+  console.log(`     ${BOLD}-> ${alert.actionable}${RESET}`);
+  console.log(`     ${DIM}${position.owner.slice(0, 12)}...${RESET}`);
 }
 
 export function printRiskBoard(alerts: RiskAlert[], positions: Position[]): void {
-  const bar = "─".repeat(68);
-  const critical = positions.filter((p) => p.riskLevel === "critical").length;
-  const danger = positions.filter((p) => p.riskLevel === "danger").length;
+  const bar = "-".repeat(74);
+  const critical = positions.filter((position) => position.riskLevel === "critical").length;
+  const danger = positions.filter((position) => position.riskLevel === "danger").length;
 
   console.log(`\n${bar}`);
-  console.log(`  ${BOLD}REAPER — LIQUIDATION RISK MONITOR${RESET}`);
-  console.log(`  ${RED}${critical} critical${RESET}  ${ORANGE}${danger} danger${RESET}  ${positions.length} total at-risk`);
+  console.log(`  ${BOLD}REAPER // DISTRESSED FLOW CONSOLE${RESET}`);
+  console.log(`  ${RED}${critical} critical${RESET}  ${ORANGE}${danger} danger${RESET}  ${positions.length} total distressed accounts`);
   console.log(bar);
 
   if (alerts.length === 0) {
-    console.log(`  ${DIM}no actionable alerts this cycle${RESET}`);
+    console.log(`  ${DIM}no actionable distressed-flow opportunities this cycle${RESET}`);
   } else {
     for (const alert of alerts) printRiskAlert(alert);
   }

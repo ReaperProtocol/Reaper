@@ -11,20 +11,12 @@ export interface Position {
   healthFactor: number;
   liquidationPrice: number;
   riskLevel: RiskLevel;
+  oracleAgeSeconds: number;
+  oracleDriftBps: number;
+  keeperRaceProbability: number;
+  unwindQuality: number;
+  liquidationEdgeUsd: number;
   lastUpdatedAt: number;
-}
-
-export interface LiquidationEvent {
-  id: string;
-  protocol: Protocol;
-  owner: string;
-  collateralToken: string;
-  borrowToken: string;
-  collateralSeized: number;
-  debtRepaid: number;
-  usdValue: number;
-  txSignature: string;
-  timestamp: number;
 }
 
 export interface RiskAlert {

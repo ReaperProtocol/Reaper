@@ -10,6 +10,9 @@ const schema = z.object({
   HEALTH_WARN_THRESHOLD: z.coerce.number().default(1.15),
   HEALTH_DANGER_THRESHOLD: z.coerce.number().default(1.05),
   MIN_POSITION_USD: z.coerce.number().default(5_000),
+  ORACLE_DRIFT_THRESHOLD_BPS: z.coerce.number().default(45),
+  MAX_ORACLE_AGE_SECONDS: z.coerce.number().default(75),
+  MIN_LIQUIDATION_EDGE_USD: z.coerce.number().default(40),
   PROTOCOLS: z.string().default("kamino,marginfi,drift"),
 });
 

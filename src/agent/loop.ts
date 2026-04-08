@@ -10,7 +10,7 @@ const client = new Anthropic({ apiKey: config.ANTHROPIC_API_KEY });
 const tools: Anthropic.Tool[] = [
   {
     name: "get_risk_summary",
-    description: "Get a summary of all at-risk positions grouped by risk level",
+    description: "Get a summary of distressed positions grouped by risk level",
     input_schema: { type: "object" as const, properties: {} },
   },
   {
@@ -27,20 +27,20 @@ const tools: Anthropic.Tool[] = [
   },
   {
     name: "get_critical_positions",
-    description: "Get only positions in the critical zone (health factor < 1.05)",
+    description: "Get only positions in the critical zone",
     input_schema: { type: "object" as const, properties: {} },
   },
   {
     name: "emit_risk_alert",
-    description: "Emit a liquidation risk alert for a specific position",
+    description: "Emit a distressed-flow alert for a specific position",
     input_schema: {
       type: "object" as const,
       properties: {
         owner: { type: "string" },
         protocol: { type: "string" },
         urgency: { type: "string", enum: ["low", "medium", "high", "critical"] },
-        message: { type: "string", description: "What's happening and why it's risky" },
-        actionable: { type: "string", description: "What the position owner should do right now" },
+        message: { type: "string" },
+        actionable: { type: "string" },
         confidence: { type: "number" },
       },
       required: ["owner", "protocol", "urgency", "message", "actionable", "confidence"],
@@ -50,18 +50,18 @@ const tools: Anthropic.Tool[] = [
 
 export async function runReaperAgent(positions: Position[]): Promise<RiskAlert[]> {
   const alerts: RiskAlert[] = [];
-  const byKey = new Map(positions.map((p) => [`${p.owner}:${p.protocol}`, p]));
+  const byKey = new Map(positions.map((position) => [`${position.owner}:${position.protocol}`, position]));
 
   const grouped = {
-    critical: positions.filter((p) => p.riskLevel === "critical"),
-    danger: positions.filter((p) => p.riskLevel === "danger"),
-    watch: positions.filter((p) => p.riskLevel === "watch"),
+    critical: positions.filter((position) => position.riskLevel === "critical"),
+    danger: positions.filter((position) => position.riskLevel === "danger"),
+    watch: positions.filter((position) => position.riskLevel === "watch"),
   };
 
   const messages: Anthropic.MessageParam[] = [
     {
       role: "user",
-      content: `New scan: ${positions.length} at-risk positions found. ${grouped.critical.length} critical, ${grouped.danger.length} danger, ${grouped.watch.length} watch. Analyze and emit alerts.`,
+      content: `New scan: ${positions.length} distressed positions found. ${grouped.critical.length} critical, ${grouped.danger.length} danger, ${grouped.watch.length} watch. Analyze and emit only opportunities with a real liquidation edge.`,
     },
   ];
 
@@ -87,22 +87,35 @@ export async function runReaperAgent(positions: Position[]): Promise<RiskAlert[]
       if (block.name === "get_risk_summary") {
         result = JSON.stringify({
           total: positions.length,
-          critical: grouped.critical.map((p) => ({ owner: p.owner.slice(0, 10), protocol: p.protocol, hf: p.healthFactor.toFixed(3), usd: `$${(p.collateralUsd).toLocaleString()}` })),
-          danger: grouped.danger.map((p) => ({ owner: p.owner.slice(0, 10), protocol: p.protocol, hf: p.healthFactor.toFixed(3) })),
+          critical: grouped.critical.map((position) => ({
+            owner: position.owner.slice(0, 10),
+            protocol: position.protocol,
+            hf: position.healthFactor.toFixed(3),
+            edge: position.liquidationEdgeUsd.toFixed(2),
+          })),
+          danger: grouped.danger.map((position) => ({
+            owner: position.owner.slice(0, 10),
+            protocol: position.protocol,
+            hf: position.healthFactor.toFixed(3),
+            edge: position.liquidationEdgeUsd.toFixed(2),
+          })),
           watch: grouped.watch.length,
         });
       } else if (block.name === "get_position_detail") {
-        const pos = byKey.get(`${input.owner}:${input.protocol}`);
-        result = pos ? JSON.stringify(pos) : "not found";
+        const position = byKey.get(`${input.owner}:${input.protocol}`);
+        result = position ? JSON.stringify(position) : "not found";
       } else if (block.name === "get_critical_positions") {
         result = JSON.stringify(grouped.critical);
       } else if (block.name === "emit_risk_alert") {
-        const pos = byKey.get(`${input.owner}:${input.protocol}`);
-        if (!pos) { result = "position not found"; continue; }
+        const position = byKey.get(`${input.owner}:${input.protocol}`);
+        if (!position) {
+          result = "position not found";
+          continue;
+        }
         const alert: RiskAlert = {
           id: crypto.randomUUID(),
           type: "at_risk",
-          position: pos,
+          position,
           urgency: input.urgency as RiskAlert["urgency"],
           message: input.message as string,
           actionable: input.actionable as string,
@@ -110,7 +123,7 @@ export async function runReaperAgent(positions: Position[]): Promise<RiskAlert[]
           generatedAt: Date.now(),
         };
         alerts.push(alert);
-        log.warn(`Alert [${alert.urgency}] ${pos.protocol} HF=${pos.healthFactor.toFixed(3)} $${pos.collateralUsd.toLocaleString()}`);
+        log.warn(`Alert [${alert.urgency}] ${position.protocol} edge=$${position.liquidationEdgeUsd.toFixed(2)} keeper=${position.keeperRaceProbability.toFixed(2)}`);
         result = JSON.stringify({ id: alert.id, accepted: true });
       }
 
