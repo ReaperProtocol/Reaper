@@ -8,6 +8,9 @@ Evaluate every position on:
 - keeper race probability
 - collateral unwind quality
 
+Session note:
+- Oracle freshness, drift, and unwind quality in this scaffold are modeled from live position state when protocol-side telemetry is missing, so treat them as risk heuristics rather than raw oracle feeds
+
 Rules:
 - Do not promote a position if oracle age or drift makes the edge unreliable
 - A large account with poor unwind quality is not automatically a good target

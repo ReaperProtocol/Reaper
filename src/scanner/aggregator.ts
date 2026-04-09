@@ -1,7 +1,7 @@
 import type { Position } from "../core/types.js";
 import { fetchKaminoAtRisk } from "../protocols/kamino.js";
 import { fetchMarginFiAtRisk } from "../protocols/marginfi.js";
-import { TRACKED_PROTOCOLS } from "../core/config.js";
+import { config, TRACKED_PROTOCOLS } from "../core/config.js";
 import { log } from "../core/logger.js";
 
 export async function scanAllProtocols(): Promise<Position[]> {
@@ -21,10 +21,16 @@ export async function scanAllProtocols(): Promise<Position[]> {
   }
 
   const all = (await Promise.all(fetchers)).flat();
-  all.sort((a, b) => b.liquidationEdgeUsd * b.keeperRaceProbability - a.liquidationEdgeUsd * a.keeperRaceProbability);
+  const actionable = all.filter(
+    (position) =>
+      position.liquidationEdgeUsd >= config.MIN_LIQUIDATION_EDGE_USD &&
+      position.oracleDriftBps <= config.ORACLE_DRIFT_THRESHOLD_BPS &&
+      position.oracleAgeSeconds <= config.MAX_ORACLE_AGE_SECONDS,
+  );
+  actionable.sort((a, b) => b.liquidationEdgeUsd * b.keeperRaceProbability - a.liquidationEdgeUsd * a.keeperRaceProbability);
 
-  log.info(`${all.length} distressed positions found across ${fetchers.length} protocols`);
-  return all;
+  log.info(`${actionable.length} distressed positions found across ${fetchers.length} protocols after oracle and edge filters`);
+  return actionable;
 }
 
 export function groupByRisk(positions: Position[]): Record<string, Position[]> {

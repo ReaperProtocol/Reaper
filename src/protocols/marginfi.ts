@@ -17,10 +17,23 @@ function toRiskLevel(hf: number): RiskLevel {
   return "critical";
 }
 
-function estimateLiquidationEdge(collateralUsd: number, borrowUsd: number, keeperRaceProbability: number): number {
+export function estimateLiquidationEdge(collateralUsd: number, borrowUsd: number, keeperRaceProbability: number): number {
   const gross = collateralUsd * 0.045;
   const costs = collateralUsd * 0.0025 + borrowUsd * 0.0015 + 10;
   return Number((gross - costs - (1 - keeperRaceProbability) * 30).toFixed(2));
+}
+
+export function deriveOracleAgeSeconds(healthFactor: number, equityUsd: number): number {
+  return Math.round(Math.min(config.MAX_ORACLE_AGE_SECONDS, 24 + (1.25 - Math.min(healthFactor, 1.25)) * 65 + equityUsd / 30_000));
+}
+
+export function deriveOracleDriftBps(healthFactor: number, borrowUsd: number): number {
+  return Math.round(16 + (1.25 - Math.min(healthFactor, 1.25)) * 90 + borrowUsd / 4_000);
+}
+
+export function deriveUnwindQuality(collateralUsd: number, borrowUsd: number): number {
+  const leverage = borrowUsd / Math.max(collateralUsd, 1);
+  return Number(Math.max(0.28, Math.min(0.88, 0.8 - leverage * 0.24 - borrowUsd / 4_000_000)).toFixed(2));
 }
 
 export async function fetchMarginFiAtRisk(): Promise<Position[]> {
@@ -30,11 +43,18 @@ export async function fetchMarginFiAtRisk(): Promise<Position[]> {
 
   const accounts = (await res.json()) as MarginfiAccount[];
   return accounts.map((account) => {
-    const collateral = account.assets.find((asset) => asset.side === "asset");
-    const borrow = account.assets.find((asset) => asset.side === "liability");
+    const collateral = [...account.assets]
+      .filter((asset) => asset.side === "asset")
+      .sort((left, right) => right.usdValue - left.usdValue)[0];
+    const borrow = [...account.assets]
+      .filter((asset) => asset.side === "liability")
+      .sort((left, right) => right.usdValue - left.usdValue)[0];
     const keeperRaceProbability = Number(Math.max(0.18, 1 - (1.25 - account.healthFactor) * 1.1).toFixed(2));
     const collateralUsd = collateral?.usdValue ?? 0;
     const borrowUsd = borrow?.usdValue ?? 0;
+    const oracleAgeSeconds = deriveOracleAgeSeconds(account.healthFactor, account.equity);
+    const oracleDriftBps = deriveOracleDriftBps(account.healthFactor, borrowUsd);
+    const unwindQuality = deriveUnwindQuality(collateralUsd, borrowUsd);
 
     return {
       owner: account.address,
@@ -44,12 +64,12 @@ export async function fetchMarginFiAtRisk(): Promise<Position[]> {
       collateralUsd,
       borrowUsd,
       healthFactor: account.healthFactor,
-      liquidationPrice: 0,
+      liquidationPrice: Number((borrowUsd / Math.max(collateralUsd, 1)).toFixed(4)),
       riskLevel: toRiskLevel(account.healthFactor),
-      oracleAgeSeconds: 54,
-      oracleDriftBps: 34,
+      oracleAgeSeconds,
+      oracleDriftBps,
       keeperRaceProbability,
-      unwindQuality: 0.66,
+      unwindQuality,
       liquidationEdgeUsd: estimateLiquidationEdge(collateralUsd, borrowUsd, keeperRaceProbability),
       lastUpdatedAt: Date.now(),
     };
