@@ -23,7 +23,7 @@ The emphasis is on whether the edge survives execution friction, not just whethe
 
 ---
 
-Distressed Flow Console • Liquidation Ticket • At a Glance • Operating Surfaces • How It Works • Example Output • Technical Spec • Risk Controls • Quick Start
+Distressed Flow Console • How Reaper Hunts • At a Glance • Operating Surfaces • How It Works • Example Output • Technical Spec • Risk Controls • Quick Start
 
 ## At a Glance
 
@@ -34,16 +34,20 @@ Distressed Flow Console • Liquidation Ticket • At a Glance • Operating Sur
 
 ## Distressed Flow Console
 
-![Reaper Risk Monitor](assets/preview-risk.svg)
+<img src="assets/preview-risk.png" alt="Reaper distressed flow console" width="100%" />
 
-## Liquidation Ticket
+Live distressed-flow console for Reaper: ranked liquidation candidates, selected position detail, oracle drift, Claude validation, verdict classification, guard status, unwind quality, raw feed, and active hunts.
 
-![Reaper Liquidation](assets/preview-liquidation.svg)
+## How Reaper Hunts
+
+<img src="assets/preview-liquidation.png" alt="Reaper hunt workflow" width="100%" />
+
+How Reaper hunts forced flow: scan monitored books, price the edge after fees and penalties, reject stale oracle setups, model keeper-race probability, and act only when edge, gates, and unwind quality all survive.
 
 ## Operating Surfaces
 
 - `Distressed Flow Console`: ranks accounts by edge quality, not just risk level
-- `Liquidation Ticket`: prints the exact setup, guardrails, and action context
+- `How Reaper Hunts`: explains how edge survives fees, oracle checks, keeper race, and unwind quality before a hunt is actionable
 - `Oracle Drift Check`: rejects setups where stale pricing invalidates the apparent edge
 - `Keeper Race Model`: estimates whether the liquidation can still be won after congestion and fees
 
