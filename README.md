@@ -23,7 +23,7 @@ The emphasis is on whether the edge survives execution friction, not just whethe
 
 ---
 
-Distressed Flow Console • How Reaper Hunts • At a Glance • Operating Surfaces • How It Works • Example Output • Technical Spec • Risk Controls • Quick Start
+Live Distressed Flow Console • How Reaper Hunts • At a Glance • Operating Surfaces • How It Works • Example Output • Technical Spec • Risk Controls • Quick Start
 
 ## At a Glance
 
@@ -32,11 +32,11 @@ Distressed Flow Console • How Reaper Hunts • At a Glance • Operating Surfa
 - `Primary failure mode`: mistaking visible danger for profitable liquidation edge
 - `Best for`: operators who care about execution-quality edge, not just liquidation proximity
 
-## Distressed Flow Console
+## Live Distressed Flow Console
 
-<img src="assets/preview-risk.png" alt="Reaper distressed flow console" width="100%" />
+<img src="assets/preview-risk.png" alt="Reaper Live Distressed Flow Console" width="100%" />
 
-Live distressed-flow console for Reaper: ranked liquidation candidates, selected position detail, oracle drift, Claude validation, verdict classification, guard status, unwind quality, raw feed, and active hunts.
+Live operating view for Reaper: position queue across monitored books, selected candidate detail with edge math, oracle drift chart, raw feed, suppressed items, guard status, active hunts, and the agent's current HUNT, PREFLIGHT, WATCH, STALE-ORACLE, UNWIND-POOR, or RACE-LOST decision.
 
 ## How Reaper Hunts
 
