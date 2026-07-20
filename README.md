@@ -5,7 +5,9 @@
 **Solana distressed-collateral hunter.**
 Scores liquidation edge, oracle drift, keeper-race probability, and unwind quality before calling a setup actionable.
 
-[![Build](https://img.shields.io/github/actions/workflow/status/ReaperProtocol/Reaper/ci.yml?branch=main&style=flat-square&label=Build)](https://github.com/ReaperProtocol/Reaper/actions)
+[Website](https://reaper-launch.vercel.app)
+
+[![Build](https://img.shields.io/github/actions/workflow/status/ReaperProtocol/Reaper/ci.yml?branch=master&style=flat-square&label=Build)](https://github.com/ReaperProtocol/Reaper/actions)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 [![Built with Claude Agent SDK](https://img.shields.io/badge/Built%20with-Claude%20Agent%20SDK-cc7800?style=flat-square)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-agent-sdk)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square)](https://www.typescriptlang.org/)

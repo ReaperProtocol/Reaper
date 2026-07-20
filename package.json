@@ -2,6 +2,7 @@
   "name": "reaper",
   "version": "0.1.1",
   "description": "Solana distressed-collateral hunter that scores liquidation edge, oracle drift, and keeper-race probability",
+  "homepage": "https://reaper-launch.vercel.app",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
