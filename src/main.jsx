@@ -1,4 +1,4 @@
-// ReaperLanding.jsx â€” single React component. Renders the Reaper landing page.
+// ReaperLanding.jsx — single React component. Renders the Reaper landing page.
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
@@ -17,7 +17,7 @@ const COLORS = {
   fadedHeadline: "rgba(233,236,239,0.32)",
 };
 
-// Inline SVG icon set â€” minimal lucide-style strokes, no external deps.
+// Inline SVG icon set — minimal lucide-style strokes, no external deps.
 const ICON_PATHS = {
   ArrowDown: <><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></>,
   Github: (
@@ -193,11 +193,11 @@ const StatusPill = ({ children }) => (
 // eslint-disable-next-line no-unused-vars
 const EdgeProfile = () => {
   const rows = [
-    { label: "ORACLE FRESHNESS", val: "âˆ’$18", pct: 0.06 },
-    { label: "DRIFT THRESHOLD", val: "âˆ’$24", pct: 0.08 },
-    { label: "KEEPER RACE", val: "âˆ’$71", pct: 0.25 },
-    { label: "UNWIND QUALITY", val: "âˆ’$32", pct: 0.11 },
-    { label: "FEES + GAS", val: "âˆ’$22", pct: 0.08 },
+    { label: "ORACLE FRESHNESS", val: "−$18", pct: 0.06 },
+    { label: "DRIFT THRESHOLD", val: "−$24", pct: 0.08 },
+    { label: "KEEPER RACE", val: "−$71", pct: 0.25 },
+    { label: "UNWIND QUALITY", val: "−$32", pct: 0.11 },
+    { label: "FEES + GAS", val: "−$22", pct: 0.08 },
   ];
   return (
     <div style={{ width: "100%", maxWidth: 440, margin: "0 auto", position: "relative" }}>
@@ -222,7 +222,7 @@ const EdgeProfile = () => {
             marginBottom: 20,
           }}
         >
-          GROSS EDGE Â· +$284
+          GROSS EDGE · +$284
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           {rows.map((r, i) => (
@@ -283,7 +283,7 @@ const EdgeProfile = () => {
             fontWeight: 500,
           }}
         >
-          NET EDGE Â· +$117
+          NET EDGE · +$117
         </div>
         <div
           style={{
@@ -304,10 +304,10 @@ const EdgeProfile = () => {
 
 // ----- HERO PANEL DECISION ROW -----
 const heroRows = [
-  { addr: "Wallet 8nQpAâ€¦wK4f", sub: "Kamino Â· USDC short", health: 92, oracle: "12s", oracleFlag: false, edge: "+$117", badge: "HUNT" },
-  { addr: "Wallet 4xR9câ€¦Lp7m", sub: "MarginFi Â· SOL short", health: 87, oracle: "8s", oracleFlag: false, edge: "+$48", badge: "WATCH" },
-  { addr: "Wallet 9bF2dâ€¦Mn5v", sub: "Drift Â· perp long", health: 96, oracle: "47s", oracleFlag: true, edge: "+$8", badge: "SKIP" },
-  { addr: "Wallet 2gB6fâ€¦Hd1q", sub: "Kamino Â· USDT short", health: 99, oracle: "62s", oracleFlag: true, edge: "âˆ’$14", badge: "EXPIRED" },
+  { addr: "Wallet 8nQpA…wK4f", sub: "Kamino · USDC short", health: 92, oracle: "12s", oracleFlag: false, edge: "+$117", badge: "HUNT" },
+  { addr: "Wallet 4xR9c…Lp7m", sub: "MarginFi · SOL short", health: 87, oracle: "8s", oracleFlag: false, edge: "+$48", badge: "WATCH" },
+  { addr: "Wallet 9bF2d…Mn5v", sub: "Drift · perp long", health: 96, oracle: "47s", oracleFlag: true, edge: "+$8", badge: "SKIP" },
+  { addr: "Wallet 2gB6f…Hd1q", sub: "Kamino · USDT short", health: 99, oracle: "62s", oracleFlag: true, edge: "−$14", badge: "EXPIRED" },
 ];
 
 const HealthBar = ({ pct }) => (
@@ -372,12 +372,12 @@ const HeroPanel = () => (
               'ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif',
           }}
         >
-          â€œFind me distressed accounts where the math still works after the keeper race. Don't bother me with stale-oracle traps. If the unwind is messy, skip it.â€
+          “Find me distressed accounts where the math still works after the keeper race. Don't bother me with stale-oracle traps. If the unwind is messy, skip it.”
         </div>
         <div style={{ display: "flex", justifyContent: "center", margin: "24px 0" }}>
           <Icon name="ArrowDown" size={20} color={COLORS.steel} />
         </div>
-        <Eyebrow>REAPER FOUND Â· 14:32 UTC</Eyebrow>
+        <Eyebrow>REAPER FOUND · 14:32 UTC</Eyebrow>
         <div style={{ marginTop: 14, display: "flex", flexDirection: "column" }}>
           {heroRows.map((r, i) => (
             <div
@@ -465,19 +465,19 @@ const HeroPanel = () => (
 
 // ----- HUNT BOARD -----
 const boardRows = [
-  { addr: "Wallet 8nQpAâ€¦wK4f", sub: "Kamino Â· USDC short", hf: "1.04", hfFlag: true, oracle: "12s", oracleFlag: false, race: "low", edge: "+$117", badge: "HUNT" },
-  { addr: "Wallet 4xR9câ€¦Lp7m", sub: "MarginFi Â· SOL short", hf: "1.06", hfFlag: false, oracle: "8s", oracleFlag: false, race: "med", edge: "+$48", badge: "WATCH" },
-  { addr: "Wallet 9bF2dâ€¦Mn5v", sub: "Drift Â· perp long", hf: "1.02", hfFlag: true, oracle: "47s", oracleFlag: true, race: "high", edge: "+$8", badge: "SKIP" },
-  { addr: "Wallet 2gB6fâ€¦Hd1q", sub: "Kamino Â· USDT short", hf: "1.01", hfFlag: true, oracle: "62s", oracleFlag: true, race: "high", edge: "âˆ’$14", badge: "EXPIRED" },
-  { addr: "Wallet 7nM2aâ€¦Vc8x", sub: "MarginFi Â· USDC short", hf: "1.08", hfFlag: false, oracle: "5s", oracleFlag: false, race: "low", edge: "+$74", badge: "HUNT" },
-  { addr: "Wallet 5kL4jâ€¦Pq3y", sub: "Drift Â· perp short", hf: "1.11", hfFlag: false, oracle: "11s", oracleFlag: false, race: "med", edge: "+$31", badge: "WATCH" },
+  { addr: "Wallet 8nQpA…wK4f", sub: "Kamino · USDC short", hf: "1.04", hfFlag: true, oracle: "12s", oracleFlag: false, race: "low", edge: "+$117", badge: "HUNT" },
+  { addr: "Wallet 4xR9c…Lp7m", sub: "MarginFi · SOL short", hf: "1.06", hfFlag: false, oracle: "8s", oracleFlag: false, race: "med", edge: "+$48", badge: "WATCH" },
+  { addr: "Wallet 9bF2d…Mn5v", sub: "Drift · perp long", hf: "1.02", hfFlag: true, oracle: "47s", oracleFlag: true, race: "high", edge: "+$8", badge: "SKIP" },
+  { addr: "Wallet 2gB6f…Hd1q", sub: "Kamino · USDT short", hf: "1.01", hfFlag: true, oracle: "62s", oracleFlag: true, race: "high", edge: "−$14", badge: "EXPIRED" },
+  { addr: "Wallet 7nM2a…Vc8x", sub: "MarginFi · USDC short", hf: "1.08", hfFlag: false, oracle: "5s", oracleFlag: false, race: "low", edge: "+$74", badge: "HUNT" },
+  { addr: "Wallet 5kL4j…Pq3y", sub: "Drift · perp short", hf: "1.11", hfFlag: false, oracle: "11s", oracleFlag: false, race: "med", edge: "+$31", badge: "WATCH" },
 ];
 
 const HuntBoard = () => {
   const colTpl = "1.6fr 0.7fr 0.7fr 0.7fr 0.9fr 0.9fr";
   return (
     <section id="board" style={{ padding: "120px 24px 80px", maxWidth: 1152, margin: "0 auto" }}>
-      <Eyebrow large>01 Â· HUNT BOARD</Eyebrow>
+      <Eyebrow large>01 · HUNT BOARD</Eyebrow>
       <h2
         className="section-headline"
         style={{
@@ -513,7 +513,7 @@ const HuntBoard = () => {
             marginBottom: 20,
           }}
         >
-          <Eyebrow>TRACKED 318 Â· ACTIVE 7 Â· SUPPRESSED 311</Eyebrow>
+          <Eyebrow>TRACKED 318 · ACTIVE 7 · SUPPRESSED 311</Eyebrow>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
             <span style={{ width: 6, height: 6, borderRadius: 99, background: COLORS.steel }} />
             <Eyebrow>UPDATED 02:18 AGO</Eyebrow>
@@ -652,12 +652,12 @@ const doctrinePoints = [
   { n: "01", h: "Origin honesty.", b: "Reaper does not pretend a stale oracle is a current one. If the price hasn't moved on-chain in 30 seconds, the trade is gated, not promoted." },
   { n: "02", h: "Race realism.", b: "If the keeper race is crowded, your edge dies before your transaction lands. Reaper models that cost up front instead of pretending it isn't there." },
   { n: "03", h: "Exit realism.", b: "An account profitable on paper is profitable only if you can unwind the collateral cleanly. Reaper scores exit quality before scoring opportunity." },
-  { n: "04", h: "Quiet output.", b: "Most days the board is short. That is the design â€” Reaper is built to surface what survives, not to fill a feed." },
+  { n: "04", h: "Quiet output.", b: "Most days the board is short. That is the design — Reaper is built to surface what survives, not to fill a feed." },
 ];
 
 const Doctrine = () => (
   <section id="doctrine" style={{ padding: "100px 24px", maxWidth: 1152, margin: "0 auto" }}>
-    <Eyebrow large>02 Â· DOCTRINE</Eyebrow>
+    <Eyebrow large>02 · DOCTRINE</Eyebrow>
     <div
       style={{
         maxWidth: 896,
@@ -682,7 +682,7 @@ const Doctrine = () => (
           letterSpacing: "-0.005em",
         }}
       >
-        â€œAn ugly health factor does not pay you by itself. It pays you only after the oracle, the queue, and the unwind have all left you something.â€
+        “An ugly health factor does not pay you by itself. It pays you only after the oracle, the queue, and the unwind have all left you something.”
       </blockquote>
       <div style={{ borderTop: `1px solid ${COLORS.hairline}`, margin: "32px 0" }} />
       <div className="doctrine-grid">
@@ -711,15 +711,15 @@ const Doctrine = () => (
 const loopSteps = [
   { n: "01", icon: "Search", title: "Scan", body: "Pulls every distressed account from Kamino, MarginFi, and Drift in a single sweep." },
   { n: "02", icon: "Calculator", title: "Price", body: "Estimates the gross edge each account would yield at current liquidation parameters." },
-  { n: "03", icon: "Eye", title: "Verify", body: "Cross-checks the oracle's last update â€” if the price feed is stale, the edge is provisional, not real." },
+  { n: "03", icon: "Eye", title: "Verify", body: "Cross-checks the oracle's last update — if the price feed is stale, the edge is provisional, not real." },
   { n: "04", icon: "Users", title: "Model", body: "Predicts how many keepers are likely to compete for the same liquidation, and what fraction of the edge survives." },
-  { n: "05", icon: "DoorOpen", title: "Exit", body: "Scores how cleanly the underlying collateral can be exited at current depth â€” illiquid collateral is downgraded." },
+  { n: "05", icon: "DoorOpen", title: "Exit", body: "Scores how cleanly the underlying collateral can be exited at current depth — illiquid collateral is downgraded." },
   { n: "06", icon: "TicketCheck", title: "Emit", body: "Issues a hunt ticket only if the net edge clears every gate. Most candidates do not." },
 ];
 
 const Loop = () => (
   <section id="loop" style={{ padding: "100px 24px", maxWidth: 1280, margin: "0 auto" }}>
-    <Eyebrow large>03 Â· LOOP</Eyebrow>
+    <Eyebrow large>03 · LOOP</Eyebrow>
     <h2
       style={{
         fontSize: "clamp(40px, 5.5vw, 68px)",
@@ -821,17 +821,17 @@ const Guardrails = () => {
     { n: "1", t: "Oracle freshness.", b: "The last on-chain price update must be within the configured staleness window. Older feeds are gated, not surfaced." },
     { n: "2", t: "Drift threshold.", b: "If the position is profitable only because the oracle hasn't caught up, Reaper subtracts that drift before scoring." },
     { n: "3", t: "Keeper-race floor.", b: "The expected fraction of edge that survives competition must clear a minimum. Crowded races demote the candidate." },
-    { n: "4", t: "Unwind quality.", b: "Collateral that can't be exited cleanly at current depth is downgraded â€” sometimes to zero â€” before final scoring." },
+    { n: "4", t: "Unwind quality.", b: "Collateral that can't be exited cleanly at current depth is downgraded — sometimes to zero — before final scoring." },
     { n: "5", t: "Net edge floor.", b: "After every haircut, the residual edge must still beat the minimum-ticket threshold. Below that, no ticket fires." },
   ];
   const blocks = [
     { t: "Gross is the start, not the answer.", b: "Reaper begins with the headline edge a liquidation appears to offer, then subtracts every honest cost: stale-oracle drift, keeper-race competition, unwind slippage, fees, and gas. The number you see on the board is what's left." },
     { t: "The board is short on purpose.", b: "Most distressed accounts look profitable on paper. Once the actual frictions are priced, fewer than one in twenty makes it through every gate. Reaper is built to filter, not to fill a feed." },
-    { t: "Empty boards are not broken boards.", b: "When markets are calm, the keeper race is more crowded and the residual edge is thinner. An empty hunt board is not a bug â€” it's the doctrine working." },
+    { t: "Empty boards are not broken boards.", b: "When markets are calm, the keeper race is more crowded and the residual edge is thinner. An empty hunt board is not a bug — it's the doctrine working." },
   ];
   return (
     <section id="guardrails" style={{ padding: "100px 24px", maxWidth: 1280, margin: "0 auto" }}>
-      <Eyebrow large>04 Â· GUARDRAILS</Eyebrow>
+      <Eyebrow large>04 · GUARDRAILS</Eyebrow>
       <h2
         style={{
           fontSize: "clamp(40px, 5.5vw, 68px)",
@@ -846,7 +846,7 @@ const Guardrails = () => {
       </h2>
       <div className="guardrails-grid">
         <div style={{ padding: "0 16px" }}>
-          <Eyebrow>RISK GATES Â· IN ORDER</Eyebrow>
+          <Eyebrow>RISK GATES · IN ORDER</Eyebrow>
           <ol style={{ listStyle: "none", padding: 0, margin: "24px 0 0", display: "flex", flexDirection: "column", gap: 28 }}>
             {gates.map((g) => (
               <li key={g.n} style={{ display: "grid", gridTemplateColumns: "32px 1fr", gap: 16 }}>
@@ -860,7 +860,7 @@ const Guardrails = () => {
           </ol>
         </div>
         <div className="guardrails-right" style={{ padding: "0 16px" }}>
-          <Eyebrow>EDGE COMPONENTS Â· STACKED</Eyebrow>
+          <Eyebrow>EDGE COMPONENTS · STACKED</Eyebrow>
           <div style={{ marginTop: 24, display: "flex", flexDirection: "column" }}>
             {blocks.map((b, i) => (
               <div
@@ -883,7 +883,7 @@ const Guardrails = () => {
 
 // ----- PRINCIPLES -----
 const principles = [
-  { n: "01", icon: "Crosshair", t: "First-order honesty.", b: "Edge is what the trade actually pays â€” not the spread that appears in a screenshot." },
+  { n: "01", icon: "Crosshair", t: "First-order honesty.", b: "Edge is what the trade actually pays — not the spread that appears in a screenshot." },
   { n: "02", icon: "Clock", t: "Oracle vigilance.", b: "Stale feeds are the most common trap. Reaper treats freshness as a primary input, not a footnote." },
   { n: "03", icon: "Users", t: "Race awareness.", b: "Liquidations are not single-actor markets. The keeper population is part of the math, every cycle." },
   { n: "04", icon: "DoorOpen", t: "Exit-aware ranking.", b: "An account profitable on entry is not profitable until the position is closed. Unwind quality is in every score." },
@@ -891,7 +891,7 @@ const principles = [
 
 const Principles = () => (
   <section id="principles" style={{ padding: "100px 24px", maxWidth: 1280, margin: "0 auto" }}>
-    <Eyebrow large>05 Â· PRINCIPLES</Eyebrow>
+    <Eyebrow large>05 · PRINCIPLES</Eyebrow>
     <h2
       style={{
         fontSize: "clamp(40px, 5.5vw, 68px)",
@@ -936,7 +936,7 @@ const Principles = () => (
 // ----- LAUNCH -----
 const Launch = () => (
   <section id="launch" style={{ padding: "100px 24px", maxWidth: 768, margin: "0 auto", textAlign: "center" }}>
-    <Eyebrow large>06 Â· LAUNCH</Eyebrow>
+    <Eyebrow large>06 · LAUNCH</Eyebrow>
     <h2
       style={{
         fontSize: "clamp(40px, 5.5vw, 64px)",
@@ -951,7 +951,7 @@ const Launch = () => (
     </h2>
     <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 48 }}>
       {[
-        { k: "LIVE", v: "The hunter runs the same loop the page describes â€” every minute, every supported protocol." },
+        { k: "LIVE", v: "The hunter runs the same loop the page describes — every minute, every supported protocol." },
         { k: "OPEN", v: "The board is public. Hunt tickets are public. The proof is the surface, not a pitch." },
         { k: "OWNED", v: "Coin holders fund the engine and steer the watchlist. The product and the launch are one thing." },
       ].map((r) => (
@@ -1013,7 +1013,7 @@ const ClosingCta = () => (
           letterSpacing: "0.06em",
         }}
       >
-        Read the doctrine â†’
+        Read the doctrine →
       </a>
       <a
         href="#board"
@@ -1026,7 +1026,7 @@ const ClosingCta = () => (
           letterSpacing: "0.06em",
         }}
       >
-        Open the board â†’
+        Open the board →
       </a>
     </div>
   </section>
@@ -1081,7 +1081,7 @@ const Footer = () => (
           letterSpacing: "0.06em",
         }}
       >
-        Reaper Â· Solana liquidation hunter Â· MIT licensed Â· 2026
+        Reaper · Solana liquidation hunter · MIT licensed · 2026
       </div>
     </div>
   </footer>
@@ -1212,7 +1212,7 @@ const Hero = () => (
             letterSpacing: "0.06em",
           }}
         >
-          Read the doctrine â†’
+          Read the doctrine →
         </a>
       </div>
     </div>
