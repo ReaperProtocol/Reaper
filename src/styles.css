@@ -1,0 +1,44 @@
+* { box-sizing: border-box; }
+
+html { background: #05070a; }
+
+body { margin: 0; min-width: 0; background: #05070a; }
+
+a:focus-visible { outline: 2px solid #4d9de0; outline-offset: 3px; }
+
+.reaper-brand { display: inline-flex; align-items: center; gap: 9px; }
+
+.reaper-brand-mark { display: block; flex: 0 0 auto; }
+
+.hero-headline { font-size: clamp(48px, 8vw, 96px); }
+
+.cta-primary:hover { background: #b9dcf7 !important; }
+
+.ghost-link:hover, .nav-link:hover, .footer-link:hover { color: #b9dcf7 !important; }
+
+.principle-card:hover { border-color: #285f8f !important; }
+
+.board-cards-mobile { display: none; }
+
+.footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.principles-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+
+.doctrine-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 64px; }
+
+.loop-grid, .guardrails-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; }
+
+.loop-horizontal { display: flex; align-items: flex-start; margin-top: 56px; }
+
+.loop-vertical { display: none; }
+
+@media (max-width: 720px) {
+  .nav-links { display: none !important; }
+  .hero-row { grid-template-columns: 1fr 0.8fr 0.7fr !important; gap: 10px !important; }
+  .hero-row > :nth-child(2), .hero-row > :nth-child(3) { display: none; }
+  .board-header, .board-rows-desktop { display: none !important; }
+  .board-cards-mobile { display: block; }
+  .principles-grid, .doctrine-grid, .loop-grid, .guardrails-grid, .footer-cols { grid-template-columns: 1fr; }
+  .loop-horizontal { display: none; }
+  .loop-vertical { display: block; margin-top: 40px; }
+}
