@@ -2,160 +2,120 @@
 
 # Reaper
 
-**Solana distressed-collateral hunter.**
-Scores liquidation edge, oracle drift, keeper-race probability, and unwind quality before calling a setup actionable.
+<img src="assets/reaper-avatar.png" alt="Reaper avatar" width="128" />
 
-[Website](https://reaper-launch.vercel.app)
+**Robinhood post-selloff recovery-edge hunter.**
+Reaper ranks sharp crypto selloffs by rebound participation, quoted spread, available depth, and recovery quality before a setup reaches the board.
+
+[Website](https://reaperedge.com/) · [Launch venue](https://pons.family/)
 
 [![Build](https://img.shields.io/github/actions/workflow/status/ReaperProtocol/Reaper/ci.yml?branch=master&style=flat-square&label=Build)](https://github.com/ReaperProtocol/Reaper/actions)
-![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
-[![Built with Claude Agent SDK](https://img.shields.io/badge/Built%20with-Claude%20Agent%20SDK-cc7800?style=flat-square)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-agent-sdk)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square)](https://www.typescriptlang.org/)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square)
+[![Built with Claude Agent SDK](https://img.shields.io/badge/Built%20with-Claude%20Agent%20SDK-2f9ee9?style=flat-square)](https://docs.anthropic.com/en/docs/agents-and-tools/claude-agent-sdk)
 
 </div>
 
 ---
 
-Liquidation tooling is usually owner-centric. Reaper is built from the other side of the trade. It looks for distressed accounts where the liquidation edge still survives stale oracles, slot congestion, and unwind friction.
+Most assets trade close to fair after a selloff. Reaper looks for the smaller set where participation returns, spreads stay controlled, and the book still supports an exit.
 
-`Reaper` scans lending books, enriches each distressed account with oracle-age, mark-drift, keeper-race, and unwind-quality fields, then asks a Claude agent to decide whether the account is merely dangerous or actually worth pursuing.
-The emphasis is on whether the edge survives execution friction, not just whether the health factor looks ugly.
+`SCAN -> MEASURE THE SELL-OFF -> CHECK RECOVERY -> SCORE -> HUNT OR SKIP`
 
-`SCAN -> PRICE EDGE -> CHECK ORACLE -> MODEL KEEPER RACE -> HUNT`
+## September 4 Market Board
 
----
+Snapshot: September 4, 2026 · 12:27 UTC
 
-Live Distressed Flow Console • How Reaper Hunts • At a Glance • Operating Surfaces • How It Works • Example Output • Technical Spec • Risk Controls • Quick Start
+| Asset | Price | 24h move | Recovery score | Decision |
+|-------|------:|---------:|---------------:|----------|
+| LINK | $12.02 | +6.56% | 86/100 | HUNT |
+| XRP | $1.45 | +5.84% | 78/100 | WATCH |
+| DOGE | $0.08768 | +5.46% | 73/100 | WATCH |
+| ETH | $2,521.04 | +4.75% | 68/100 | WATCH |
+| BTC | $81,172 | +4.16% | 55/100 | SKIP |
+| AAVE | $135.75 | +3.59% | 31/100 | EXPIRED |
 
-## At a Glance
+The snapshot is fixed to the timestamp above. Reaper does not present historical values as a live feed.
 
-- `Use case`: identify distressed Solana lending accounts that are actually worth chasing
-- `Primary input`: liquidation spread, oracle freshness, keeper-race probability, unwind quality
-- `Primary failure mode`: mistaking visible danger for profitable liquidation edge
-- `Best for`: operators who care about execution-quality edge, not just liquidation proximity
+## At A Glance
 
-## Live Distressed Flow Console
+- `Use case` — rank recovery setups after a sharp selloff
+- `Primary inputs` — rebound participation, quoted spread, depth quality, and time since the low
+- `Primary failure mode` — treating a bounce as proof that recovery is durable
+- `Output` — HUNT, WATCH, SKIP, or EXPIRED with the supporting score
 
-<img src="assets/preview-risk.png" alt="Reaper Live Distressed Flow Console" width="100%" />
+## What Reaper Measures
 
-Live operating view for Reaper: position queue across monitored books, selected candidate detail with edge math, oracle drift chart, raw feed, suppressed items, guard status, active hunts, and the agent's current HUNT, PREFLIGHT, WATCH, STALE-ORACLE, UNWIND-POOR, or RACE-LOST decision.
+### Recovery Participation
 
-## How Reaper Hunts
+Price alone does not prove that buyers returned. Reaper looks for participation that persists beyond the first reactive print.
 
-<img src="assets/preview-liquidation.png" alt="Reaper hunt workflow" width="100%" />
+### Spread Quality
 
-How Reaper hunts forced flow: scan monitored books, price the edge after fees and penalties, reject stale oracle setups, model keeper-race probability, and act only when edge, gates, and unwind quality all survive.
+A strong-looking rebound loses value when the quoted spread absorbs the edge. Reaper rejects candidates that remain expensive to enter or exit.
 
-## Operating Surfaces
+### Available Depth
 
-- `Distressed Flow Console`: ranks accounts by edge quality, not just risk level
-- `How Reaper Hunts`: explains how edge survives fees, oracle checks, keeper race, and unwind quality before a hunt is actionable
-- `Oracle Drift Check`: rejects setups where stale pricing invalidates the apparent edge
-- `Keeper Race Model`: estimates whether the liquidation can still be won after congestion and fees
+The board favors assets with enough visible depth to support the intended size. Thin setups stay out even when the headline move looks attractive.
 
-## Why Reaper Exists
+### Time Since The Low
 
-Many liquidation boards tell you which positions are unsafe. That is useful, but it is not the same as telling you which positions are actually worth pursuing.
+Very early rebounds lack evidence. Very late rebounds often lose the asymmetry. Reaper scores the window between those extremes.
 
-Reaper exists to bridge that gap. A distressed account can look attractive and still be untradeable once stale oracles, slot congestion, priority fees, and unwind friction are all counted honestly.
+## Decision Gates
 
-## How It Works
+A candidate reaches HUNT only when all five checks agree:
 
-Reaper follows a liquidation-quality loop:
+1. the quoted spread stays inside the configured ceiling
+2. recovery participation clears the minimum score
+3. the current move still sits inside the valid recovery window
+4. the book supports the intended size
+5. the setup is not a duplicate of an active name
 
-1. scan the monitored books for distressed accounts
-2. estimate the gross liquidation spread
-3. discount that spread for oracle age, mark drift, keeper competition, and unwind friction
-4. rank the remaining accounts by edge that still survives execution
-5. emit a ticket only when the opportunity is dangerous and actionable
-
-The goal is not to find every risky account. The goal is to find the ones where the edge is still real.
-
-## What A Real Reaper Setup Looks Like
-
-- the liquidation spread is still positive after friction
-- oracle age and drift are still inside acceptable bounds
-- keeper race probability is strong enough to justify the attempt
-- seized collateral still looks exit-able after the liquidation
-
-If those pieces do not line up, the account may be distressed but not worth the chase.
+Every rejected item keeps its reason. Quiet output means the board found no setup worth promoting.
 
 ## Example Output
 
 ```text
-REAPER // LIQUIDATION TICKET
+REAPER // RECOVERY TICKET
 
-market             SOL/USDC
-health factor      1.021
-net edge           $142
-oracle age         32s
-keeper race        0.62
-unwind quality     0.78
+asset             LINK
+price             $12.02
+24h move          +6.56%
+quoted spread     0.18%
+depth             deep
+recovery score    86/100
+decision          HUNT
 
-operator note: edge still survives fees and oracle guardrails
+reason: participation returned while spread and depth stayed inside the operating limits
 ```
 
-## Technical Spec
+## Operating Loop
 
-Reaper estimates liquidation opportunity quality with:
+1. pull the supported Robinhood crypto snapshot
+2. identify assets recovering from a meaningful session low
+3. score participation, spread, depth, and timing
+4. remove duplicate, late, or weak candidates
+5. rank the survivors and print one clear decision per asset
 
-`Edge = grossLiquidationSpread - slippageCost - priorityFee - keeperFailurePenalty - oraclePenalty`
-
-Additional guards:
-
-- reject marginal setups when `oracleAgeSeconds > MAX_ORACLE_AGE_SECONDS`
-- reject when `oracleDriftBps > ORACLE_DRIFT_THRESHOLD_BPS`
-- rank by `liquidationEdgeUsd * keeperRaceProbability`
-- surface `unwindQuality` so distressed collateral that cannot be exited cleanly is demoted
-
-The repo deliberately distinguishes between:
-
-- a position that is close to liquidation
-- a position that is actually worth chasing
-
-Those are not the same.
+The loop stays deterministic around its gates. The model explains the setup after the data checks pass; it does not override a failed gate.
 
 ## Risk Controls
 
-- `oracle freshness gate`: rejects setups where pricing is too stale to trust
-- `drift threshold`: blocks liquidations that look profitable only because the oracle is off
-- `keeper race filter`: downgrades opportunities that are unlikely to be won
-- `unwind quality check`: rejects collateral that still looks too hard to exit after seizure
-
-Reaper is strict because an ugly health factor does not pay you by itself.
+- `spread ceiling` — blocks rebounds whose execution cost consumes the edge
+- `recovery floor` — requires enough participation before promotion
+- `time window` — removes rebounds that are too early or already stale
+- `position cap` — limits the number of promoted names
+- `dry mode` — keeps the scaffold observational unless execution is configured explicitly
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/ReaperProtocol/Reaper
-cd Reaper && bun install
+cd Reaper
+npm install
 cp .env.example .env
-bun run dev
+npm run dev
 ```
-
-## Configuration
-
-```bash
-ANTHROPIC_API_KEY=sk-ant-...
-HELIUS_API_KEY=...
-HEALTH_WARN_THRESHOLD=1.15
-HEALTH_DANGER_THRESHOLD=1.05
-ORACLE_DRIFT_THRESHOLD_BPS=45
-MAX_ORACLE_AGE_SECONDS=75
-MIN_LIQUIDATION_EDGE_USD=40
-```
-
-## Legitimacy Notes
-
-- Planned commit sequence: [`docs/commit-sequence.md`](docs/commit-sequence.md)
-- Draft engineering issues: [`docs/issue-drafts.md`](docs/issue-drafts.md)
-
-## Support Docs
-
-- [Runbook](docs/runbook.md)
-- [Changelog](CHANGELOG.md)
-- [Contributing](CONTRIBUTING.md)
-- [Security](SECURITY.md)
 
 ## License
 
@@ -163,4 +123,4 @@ MIT
 
 ---
 
-*hunt the edge, not just the health factor.*
+*rank the recovery, not the drama.*

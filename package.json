@@ -1,8 +1,8 @@
 {
   "name": "reaper",
   "version": "0.1.1",
-  "description": "Solana distressed-collateral hunter that scores liquidation edge, oracle drift, and keeper-race probability",
-  "homepage": "https://reaper-launch.vercel.app",
+  "description": "Robinhood post-selloff recovery-edge hunter that ranks rebound participation, spread, and depth quality",
+  "homepage": "https://reaperedge.com/",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
@@ -24,10 +24,11 @@
     "vitest": "^2.1.8"
   },
   "keywords": [
-    "solana",
-    "liquidations",
-    "distressed-flow",
-    "keepers"
+    "robinhood",
+    "recovery",
+    "market-structure",
+    "crypto",
+    "pons"
   ],
   "engines": {
     "node": ">=20.0.0",
